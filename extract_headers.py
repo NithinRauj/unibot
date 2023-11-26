@@ -1,3 +1,4 @@
+import os
 import json
 import re
 
@@ -21,6 +22,7 @@ def modify_json(input_file, output_file):
     try:
         with open(input_file, 'r', encoding='utf-8') as infile:
             data = json.load(infile)
+        infile.close()
         modified_data = []
 
         for entry in data:
@@ -29,14 +31,21 @@ def modify_json(input_file, output_file):
                 entry['context'] = headings
                 modified_data.append(entry)
 
-        with open(output_file, 'w') as outfile:
+        with open(output_file, 'a') as outfile:
             json.dump(modified_data, outfile, indent=2)
+        outfile.close()
     except Exception as e:
         print('Error', e)
 
 
-# Example usage:
-input_json_file = './UITS-data.json'
-output_json_file = './UITS-output.json'
+if __name__ == '__main__':
+    input_folder_path = 'data'
+    output_folder_path = 'processed_data'
+    output_file = 'data.json'
+    output_file_path = os.path.join(output_folder_path, output_file)
 
-modify_json(input_json_file, output_json_file)
+    for filename in os.listdir(input_folder_path):
+        if filename.endswith('.json'):
+            file_path = os.path.join(input_folder_path, filename)
+            print(file_path)
+            modify_json(file_path, output_file_path)
