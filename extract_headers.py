@@ -31,8 +31,8 @@ def modify_json(input_file, output_file):
                 entry['context'] = headings
                 modified_data.append(entry)
 
-        with open(output_file, 'a') as outfile:
-            json.dump(modified_data, outfile, indent=2)
+        with open(output_file, 'a', encoding='utf-8') as outfile:
+            json.dump(modified_data, outfile, indent=2, ensure_ascii=False)
         outfile.close()
     except Exception as e:
         print('Error', e)
